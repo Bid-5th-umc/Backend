@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.bid.auction.domain.bid.entity.Bid;
 import com.bid.auction.domain.product.common.BaseEntity;
 import com.bid.auction.domain.product.enums.AuctionStatus;
 import com.bid.auction.domain.product.enums.ProductCondition;

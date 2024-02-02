@@ -1,6 +1,4 @@
-package com.bid.auction.domain.product.entity;
-
-import java.time.LocalDateTime;
+package com.bid.auction.domain.bid.entity;
 
 import com.bid.auction.domain.product.common.BaseEntity;
 
