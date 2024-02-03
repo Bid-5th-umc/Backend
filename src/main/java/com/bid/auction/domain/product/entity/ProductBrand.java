@@ -37,7 +37,7 @@ public class ProductBrand extends BaseEntity {
 	private String productBrandName;
 
 	@OneToMany(mappedBy = "product_brand", cascade = CascadeType.ALL)
-	private List<Product> productList = new ArrayList<>();
+	private List<AuctionPost> auctionPostList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "product_brand", cascade = CascadeType.ALL)
 	private List<ProductBrandLike> productBrandLikeList = new ArrayList<>();

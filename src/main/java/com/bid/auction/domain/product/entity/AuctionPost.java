@@ -88,8 +88,12 @@ public class AuctionPost extends BaseEntity {
 	private List<Bid> bidList = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id")
-	private Product product;
+	@JoinColumn(name = "product_brand_id")
+	private ProductBrand productBrand;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_category_id")
+	private ProductCategory productCategory;
 
 	// User Entity 추가시 TODO
 	/*

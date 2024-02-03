@@ -44,5 +44,5 @@ public class ProductCategory extends BaseEntity {
 	private ProductCategoryGender productCategoryGender;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-	private List<Product> productList = new ArrayList<>();
+	private List<AuctionPost> auctionPostList = new ArrayList<>();
 }
