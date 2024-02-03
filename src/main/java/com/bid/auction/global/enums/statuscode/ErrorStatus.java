@@ -22,7 +22,11 @@ public enum ErrorStatus implements BaseCode {
 	_PAYMENT_ORDER_NOT_FOUND(HttpStatus.BAD_REQUEST, "PAYMENT_ORDER4001", "해당 결제 주문이 존재하지 않습니다."),
 
 	// payment order status
-	_PAYMENT_ORDER_STATUS_NOT_FOUND(HttpStatus.BAD_REQUEST, "PAYMENT_ORDER_STATUS4001", "유효하지 않은 결제 주문 상태입니다.");
+	_PAYMENT_ORDER_STATUS_NOT_FOUND(HttpStatus.BAD_REQUEST, "PAYMENT_ORDER_STATUS4001", "유효하지 않은 결제 주문 상태입니다."),
+
+	// auction post
+	_IMAGE_FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "AUCTION_POST4001", "이미지 파일의 크기가 너무 큽니다."),
+	_BUYOUT_PRICE_NOT_VALID(HttpStatus.BAD_REQUEST, "AUCTION_POST4002", "즉시 구매 가격은 최소 입찰가보다 높아야 합니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
