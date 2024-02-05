@@ -76,7 +76,7 @@ public class AuctionPost extends BaseEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "auction_status", nullable = false)
-	private AuctionStatus status;
+	private AuctionStatus auctionStatus;
 
 	@OneToMany(mappedBy = "auctionPost", cascade = CascadeType.ALL)
 	private List<AuctionPostImage> auctionPostImageList = new ArrayList<>();
@@ -108,7 +108,7 @@ public class AuctionPost extends BaseEntity {
 			", bidIncrement=" + bidIncrement +
 			", viewCount=" + viewCount +
 			", condition=" + condition +
-			", status=" + status +
+			", status=" + auctionStatus +
 			", auctionPostImageList=" + auctionPostImageList +
 			", bidList=" + bidList +
 			", productBrand=" + productBrand +
