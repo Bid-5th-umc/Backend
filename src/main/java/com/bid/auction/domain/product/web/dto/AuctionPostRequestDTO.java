@@ -74,7 +74,7 @@ public class AuctionPostRequestDTO {
 	@Getter
 	@Setter
 	public static class getAuctionPostListDTO {
-		@NotNull
+		@NotNull(message = "정렬 기준은 필수 입니다.")
 		// @EnumValue(enumClass = SortStatus.class)
 		private SortStatus sort;
 
@@ -85,11 +85,11 @@ public class AuctionPostRequestDTO {
 		private ProductCategoryName categoryName;
 
 		@NonNegative
-		@NotNull
+		@NotNull(message = "page값은 필수입니다.")
 		private Integer page;
 
 		@NonNegative
-		@NotNull
+		@NotNull(message = "postCount값은 필수입니다.")
 		private Integer postCount;
 	}
 }

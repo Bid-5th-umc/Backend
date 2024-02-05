@@ -33,7 +33,7 @@ public class ImageFileSizeValidator implements ConstraintValidator<ImageFileSize
 
 		if (!isValid) {
 			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate(ErrorStatus._IMAGE_FILE_SIZE_EXCEEDED.toString())
+			context.buildConstraintViolationWithTemplate(ErrorStatus._IMAGE_FILE_SIZE_EXCEEDED.getMessage().toString())
 				.addConstraintViolation();
 		}
 

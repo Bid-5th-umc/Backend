@@ -16,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 public class NonNegativePageValidator implements ConstraintValidator<NonNegative, Integer> {
 	@Override
 	public boolean isValid(Integer value, ConstraintValidatorContext context) {
+		if(value == null){
+			return true;
+		}
 		boolean isValid = value >= 0;
 		log.info("isValid = {}", isValid);
 		if(!isValid){
