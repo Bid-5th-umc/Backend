@@ -1,10 +1,18 @@
 package com.bid.auction.domain.product.validation.validator;
 
+import org.springframework.stereotype.Component;
+
 import com.bid.auction.domain.product.validation.annotation.EnumValue;
+import com.bid.auction.global.enums.statuscode.ErrorStatus;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@Component
+@RequiredArgsConstructor
 public class EnumValueValidator implements ConstraintValidator<EnumValue, String> {
 	private Class<? extends Enum<?>> enumClass;
 
@@ -14,17 +22,28 @@ public class EnumValueValidator implements ConstraintValidator<EnumValue, String
 			return true;
 		}
 
+		boolean isValid = false;
+
+		log.info("Enum Validation , value = {}", value);
+
 		try {
 			Enum<?>[] enumConstants = enumClass.getEnumConstants();
 			for (Enum<?> enumConstant : enumConstants) {
 				if (enumConstant.name().equals(value)) {
-					return true; // Enum에 해당 값이 존재하면 유효
+					isValid = true; // Enum에 해당 값이 존재하면 유효
+					break;
 				}
 			}
-			return false; // 존재하지 않으면 유효하지 않음
 		} catch (IllegalArgumentException ex) {
-			return false; // 예외 발생 시 유효하지 않음
+			log.error("Enum 검증 도중 오류 발생", ex);
 		}
+
+		if(!isValid){
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate(ErrorStatus._INVALID_ENUM_VALUE.toString()).addConstraintViolation();
+		}
+
+		return isValid;
 	}
 
 	@Override

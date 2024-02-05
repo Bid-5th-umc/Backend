@@ -17,5 +17,5 @@ public @interface EnumValue {
 	String message() default "Invalid enum value";
 	Class<?>[] groups() default {};
 	Class<? extends Payload>[] payload() default {};
-	Class<? extends Enum<?>> enumClass();
+	Class<? extends java.lang.Enum<?>> enumClass();
 }
