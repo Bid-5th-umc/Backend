@@ -19,10 +19,9 @@ public class ValidBuyoutPriceValidator implements ConstraintValidator<ValidBuyou
 	public boolean isValid(AuctionPostRequestDTO.CreateAuctionPostDTO value, ConstraintValidatorContext context) {
 		if(value == null) return true;
 		boolean isValid = value.getBuyoutPrice() > value.getInitialBid();
-
 		if(!isValid){
 			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate(ErrorStatus._BUYOUT_PRICE_NOT_VALID.toString())
+			context.buildConstraintViolationWithTemplate(ErrorStatus._BUYOUT_PRICE_NOT_VALID.getMessage().toString())
 				.addConstraintViolation();
 		}
 		return isValid;

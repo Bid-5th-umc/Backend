@@ -2,8 +2,9 @@ package com.bid.auction.domain.product.web.dto;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.bid.auction.domain.product.enums.ProductCondition;
-import com.bid.auction.domain.product.validation.annotation.EnumValue;
 import com.bid.auction.domain.product.validation.annotation.ImageFileSize;
 import com.bid.auction.domain.product.validation.annotation.ValidBuyoutPrice;
 
@@ -13,10 +14,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 
 public class AuctionPostRequestDTO {
 
 	@Getter
+	@Setter
 	@ValidBuyoutPrice
 	public static class CreateAuctionPostDTO {
 		@NotBlank
@@ -43,11 +46,25 @@ public class AuctionPostRequestDTO {
 		private Long bidIncrement;
 
 		@NotNull
-		@EnumValue(enumClass = ProductCondition.class)
+		// @EnumValue(enumClass = ProductCondition.class)
 		private ProductCondition condition;
 
 		@ImageFileSize
-		private List<byte[]> images;
+		private List<MultipartFile> images;
+
+		@Override
+		public String toString() {
+			return "CreateAuctionPostDTO{" +
+				"title='" + title + '\'' +
+				", description='" + description + '\'' +
+				", auctionDuration=" + auctionDuration +
+				", initialBid=" + initialBid +
+				", buyoutPrice=" + buyoutPrice +
+				", bidIncrement=" + bidIncrement +
+				", condition=" + condition +
+				", images=" + images +
+				'}';
+		}
 	}
 
 }

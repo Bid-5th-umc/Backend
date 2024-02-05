@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bid.auction.domain.product.validation.annotation.ImageFileSize;
 import com.bid.auction.global.enums.statuscode.ErrorStatus;
@@ -16,17 +17,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ImageFileSizeValidator implements ConstraintValidator<ImageFileSize, List<byte[]>> {
+public class ImageFileSizeValidator implements ConstraintValidator<ImageFileSize, List<MultipartFile>> {
 
 	@Value("${spring.servlet.multipart.max-file-size}")
-	static private String maxSize;
+	private String maxSize;
 
 	@Override
-	public boolean isValid(List<byte[]> value, ConstraintValidatorContext context) {
+	public boolean isValid(List<MultipartFile> value, ConstraintValidatorContext context) {
 		if(value == null) return true;
 		boolean isValid = true;
 		if (value.stream()
-			.anyMatch(image -> image.length <= convertToBytes(maxSize))) {
+			.anyMatch(image -> image.getSize() >= convertToBytes(maxSize))) {
 			isValid = false;
 		}
 
@@ -35,6 +36,7 @@ public class ImageFileSizeValidator implements ConstraintValidator<ImageFileSize
 			context.buildConstraintViolationWithTemplate(ErrorStatus._IMAGE_FILE_SIZE_EXCEEDED.toString())
 				.addConstraintViolation();
 		}
+
 		return isValid;
 	}
 
@@ -44,7 +46,6 @@ public class ImageFileSizeValidator implements ConstraintValidator<ImageFileSize
 	}
 
 	public static long convertToBytes(String sizeStr) {
-		log.info("max-size = {}", sizeStr);
 		if (sizeStr.toUpperCase().endsWith("MB")) {
 			int value = Integer.parseInt(sizeStr.substring(0, sizeStr.length() - 2).trim());
 			return value * 1024L * 1024L; // MB to Bytes
@@ -55,7 +56,7 @@ public class ImageFileSizeValidator implements ConstraintValidator<ImageFileSize
 			return Integer.parseInt(sizeStr.substring(0, sizeStr.length() - 1).trim());
 		}
 		// 프로퍼티 변수가 잘못된 경우 (MB 단위 이상)
-		log.error("Unsupported size unit. input = {}", sizeStr);
-		throw new IllegalArgumentException("Unsupported size unit.");
+		log.error("지원하지 않는 프로퍼티 단위입니다. input = {}", sizeStr);
+		throw new IllegalArgumentException("지원하지 않는 프로퍼티 단위입니다.");
 	}
 }
