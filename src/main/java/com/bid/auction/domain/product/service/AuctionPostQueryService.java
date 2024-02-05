@@ -11,4 +11,6 @@ import com.bid.auction.domain.product.web.dto.AuctionPostResponseDTO;
 
 public interface AuctionPostQueryService {
 	AuctionPostResponseDTO.AuctionPostPreviewListDTO getAuctionPostList(AuctionPostRequestDTO.getAuctionPostListDTO request);
+
+	AuctionPostResponseDTO.MainAuctionPostDTO getAuctionPost(Long auctionPostId);
 }

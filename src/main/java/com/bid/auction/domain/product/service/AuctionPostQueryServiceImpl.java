@@ -27,7 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AuctionPostQueryServiceImpl implements AuctionPostQueryService{
+
 	private final AuctionPostRepository auctionPostRepository;
+
 	@Override
 	public AuctionPostResponseDTO.AuctionPostPreviewListDTO getAuctionPostList(
 		AuctionPostRequestDTO.getAuctionPostListDTO request) {
@@ -37,7 +39,7 @@ public class AuctionPostQueryServiceImpl implements AuctionPostQueryService{
 			sort = Sort.by(Sort.Direction.DESC, "viewCount"); // 추천 순 -> 조회수가 많은 순서로
 		}
 		else if(request.getSort() == SortStatus._DEADLINE){
-			sort = Sort.by(Sort.Direction.DESC, "expirationDate"); // 마감 임박 순
+			sort = Sort.by(Sort.Direction.ASC, "expirationDate"); // 마감 임박 순
 		}
 		// else if(sortStatus == SortStatus._POPULAR){
 		//
@@ -63,5 +65,11 @@ public class AuctionPostQueryServiceImpl implements AuctionPostQueryService{
 				request.getGender(), request.getCategoryName(), AuctionStatus._ACTIVE, pageable);
 		}
 		return AuctionPostConverter.toAuctionPostPreviewListDTO(result);
+	}
+
+	@Override
+	public AuctionPostResponseDTO.MainAuctionPostDTO getAuctionPost(Long auctionPostId) {
+		AuctionPost auctionPost = auctionPostRepository.findById(auctionPostId).orElseThrow(() -> new GeneralException(ErrorStatus._AUCTION_POST_NOT_FOUND));
+		return AuctionPostConverter.toMainAuctionPostDTO(auctionPost);
 	}
 }

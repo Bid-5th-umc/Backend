@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 
 import com.bid.auction.domain.product.entity.AuctionPost;
+import com.bid.auction.domain.product.entity.AuctionPostImage;
 import com.bid.auction.domain.product.enums.AuctionStatus;
 import com.bid.auction.domain.product.web.dto.AuctionPostRequestDTO;
 import com.bid.auction.domain.product.web.dto.AuctionPostResponseDTO;
@@ -62,6 +63,26 @@ public class AuctionPostConverter {
 			.listSize(auctionPostPage.getSize())
 			.totalElements(auctionPostPage.getTotalElements())
 			.totalPage(auctionPostPage.getTotalPages())
+			.build();
+	}
+
+	public static AuctionPostResponseDTO.MainAuctionPostDTO toMainAuctionPostDTO(AuctionPost auctionPost){
+
+		List<String> urlList = auctionPost.getAuctionPostImageList().stream()
+			.map(AuctionPostImage::getImageUrl)
+			.collect(Collectors.toList());
+		return AuctionPostResponseDTO.MainAuctionPostDTO.builder()
+			.title(auctionPost.getTitle())
+			.description(auctionPost.getDescription())
+			// .currentBidPrice(auctionPost.) // TODO 현재 최고 입찰가 Redis로 변경
+			.buyoutPrice(auctionPost.getBuyoutPrice())
+			.initialBidPrice(auctionPost.getInitialBid())
+			.expirationDate(auctionPost.getExpirationDate())
+			.viewCount(auctionPost.getViewCount())
+			.productCondition(auctionPost.getCondition())
+			.bidCount((long)auctionPost.getBidList().size())
+			// .sellerLoginId(auctionPost.getUser().getLoginId()) // TODO User entity 추가시
+			.imageUrls(urlList)
 			.build();
 	}
 

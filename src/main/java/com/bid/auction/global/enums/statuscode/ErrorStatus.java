@@ -29,8 +29,8 @@ public enum ErrorStatus implements BaseCode {
 	_BUYOUT_PRICE_NOT_VALID(HttpStatus.BAD_REQUEST, "AUCTION_POST4002", "즉시 구매 가격은 최소 입찰가보다 높아야 합니다."),
 	_INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "AUCTION_POST4003", "잘못된 카테고리 입니다."),
 	_NOT_POSITIVE_NUMBER(HttpStatus.BAD_REQUEST, "AUCTIONPOST4004", "음수일 수 없습니다."),
-	_INVALID_ENUM_VALUE(HttpStatus.BAD_REQUEST, "AUCTIONPOST4005", "지원하지 않는 필드 값입니다.");
-
+	_INVALID_ENUM_VALUE(HttpStatus.BAD_REQUEST, "AUCTIONPOST4005", "지원하지 않는 필드 값입니다."),
+	_AUCTION_POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "AUCTIONPOST4006", "유효하지 않은 상품 게시물입니다.");
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
