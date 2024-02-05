@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bid.auction.domain.product.enums.ProductCategoryGender;
+import com.bid.auction.domain.product.enums.ProductCategoryName;
 import com.bid.auction.domain.product.enums.ProductCondition;
+import com.bid.auction.domain.product.enums.SortStatus;
 import com.bid.auction.domain.product.validation.annotation.ImageFileSize;
+import com.bid.auction.domain.product.validation.annotation.NonNegative;
 import com.bid.auction.domain.product.validation.annotation.ValidBuyoutPrice;
 
 import jakarta.validation.constraints.Max;
@@ -67,4 +71,25 @@ public class AuctionPostRequestDTO {
 		}
 	}
 
+	@Getter
+	@Setter
+	public static class getAuctionPostListDTO {
+		@NotNull
+		// @EnumValue(enumClass = SortStatus.class)
+		private SortStatus sort;
+
+		// @EnumValue(enumClass = ProductCategoryGender.class)
+		private ProductCategoryGender gender;
+
+		// @EnumValue(enumClass = ProductCategoryName.class)
+		private ProductCategoryName categoryName;
+
+		@NonNegative
+		@NotNull
+		private Integer page;
+
+		@NonNegative
+		@NotNull
+		private Integer postCount;
+	}
 }

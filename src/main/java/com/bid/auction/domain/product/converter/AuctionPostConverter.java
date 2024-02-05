@@ -2,6 +2,10 @@ package com.bid.auction.domain.product.converter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
 
 import com.bid.auction.domain.product.entity.AuctionPost;
 import com.bid.auction.domain.product.enums.AuctionStatus;
@@ -22,7 +26,7 @@ public class AuctionPostConverter {
 			.buyoutPrice(request.getBuyoutPrice())
 			.bidIncrement(request.getBidIncrement())
 			.condition(request.getCondition())
-			.status(AuctionStatus._ACTIVE)
+			.auctionStatus(AuctionStatus._ACTIVE)
 			.auctionPostImageList(new ArrayList<>())
 			.viewCount(0L)
 			.build();
@@ -31,8 +35,33 @@ public class AuctionPostConverter {
 	public static AuctionPostResponseDTO.CreateAuctionPostResultDTO toCreateAuctionPostResultDTO(
 		AuctionPost auctionPost) {
 		return AuctionPostResponseDTO.CreateAuctionPostResultDTO.builder()
-			.auctionPostid(auctionPost.getId())
+			.auctionPostId(auctionPost.getId())
 			.createdAt(LocalDateTime.now())
+			.build();
+	}
+
+	public static AuctionPostResponseDTO.AuctionPostPreviewDTO toAuctionPostPreviewDTO(AuctionPost auctionPost) {
+		return AuctionPostResponseDTO.AuctionPostPreviewDTO.builder()
+			.auctionPostId(auctionPost.getId())
+			.title(auctionPost.getTitle())
+			.deadLine(auctionPost.getExpirationDate())
+			.mainImageUrl(auctionPost.getAuctionPostImageList().isEmpty() ? null :
+				auctionPost.getAuctionPostImageList().get(0).getImageUrl())
+			.build();
+	}
+
+	public static AuctionPostResponseDTO.AuctionPostPreviewListDTO toAuctionPostPreviewListDTO(
+		Page<AuctionPost> auctionPostPage) {
+		List<AuctionPostResponseDTO.AuctionPostPreviewDTO> auctionPostPreviewDTOList = auctionPostPage.stream()
+			.map(AuctionPostConverter::toAuctionPostPreviewDTO).collect(Collectors.toList());
+
+		return AuctionPostResponseDTO.AuctionPostPreviewListDTO.builder()
+			.auctionPostList(auctionPostPreviewDTOList)
+			.isFirst(auctionPostPage.isFirst())
+			.isLast(auctionPostPage.isLast())
+			.listSize(auctionPostPage.getSize())
+			.totalElements(auctionPostPage.getTotalElements())
+			.totalPage(auctionPostPage.getTotalPages())
 			.build();
 	}
 
