@@ -32,7 +32,7 @@ public class ProductCategory extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "product_category_id", nullable = false)
+	@Column(name = "product_category_id")
 	private Long id;
 
 	@NotNull
@@ -43,6 +43,6 @@ public class ProductCategory extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private ProductCategoryGender productCategoryGender;
 
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
 	private List<AuctionPost> auctionPostList = new ArrayList<>();
 }

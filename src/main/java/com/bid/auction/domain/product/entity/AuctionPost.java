@@ -10,6 +10,7 @@ import com.bid.auction.domain.bid.entity.Bid;
 import com.bid.auction.domain.product.common.BaseEntity;
 import com.bid.auction.domain.product.enums.AuctionStatus;
 import com.bid.auction.domain.product.enums.ProductCondition;
+import com.bid.auction.domain.user.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -42,12 +43,8 @@ public class AuctionPost extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "auction_post_id", nullable = false)
+	@Column(name = "auction_post_id")
 	private Long id;
-
-	// TODO
-	// @NotNull
-	// private Long productId;
 
 	@Column(name = "auction_post_title", nullable = false, length = 255)
 	private String title;
@@ -81,10 +78,10 @@ public class AuctionPost extends BaseEntity {
 	@Column(name = "auction_status", nullable = false)
 	private AuctionStatus status;
 
-	@OneToMany(mappedBy = "auction_post", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "auctionPost", cascade = CascadeType.ALL)
 	private List<AuctionPostImage> auctionPostImageList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "auction_post", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "auctionPost", cascade = CascadeType.ALL)
 	private List<Bid> bidList = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -95,10 +92,27 @@ public class AuctionPost extends BaseEntity {
 	@JoinColumn(name = "product_category_id")
 	private ProductCategory productCategory;
 
-	// User Entity 추가시 TODO
-	/*
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User seller;
-	 */
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "user_id")
+	// private User seller;
+
+	@Override
+	public String toString() {
+		return "AuctionPost{" +
+			"id=" + id +
+			", title='" + title + '\'' +
+			", description='" + description + '\'' +
+			", expirationDate=" + expirationDate +
+			", initialBid=" + initialBid +
+			", buyoutPrice=" + buyoutPrice +
+			", bidIncrement=" + bidIncrement +
+			", viewCount=" + viewCount +
+			", condition=" + condition +
+			", status=" + status +
+			", auctionPostImageList=" + auctionPostImageList +
+			", bidList=" + bidList +
+			", productBrand=" + productBrand +
+			", productCategory=" + productCategory +
+			'}';
+	}
 }

@@ -26,7 +26,7 @@ public class AuctionPostImage extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "auction_post_image_id", nullable = false)
+	@Column(name = "auction_post_image_id")
 	private Long id;
 
 	@NotBlank

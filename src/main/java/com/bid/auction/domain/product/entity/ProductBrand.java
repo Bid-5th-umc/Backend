@@ -29,16 +29,16 @@ public class ProductBrand extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "product_brand_id", nullable = false)
+	@Column(name = "product_brand_id")
 	private Long id;
 
 	@NotBlank
 	@Column(length = 30, nullable = false)
 	private String productBrandName;
 
-	@OneToMany(mappedBy = "product_brand", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "productBrand", cascade = CascadeType.ALL)
 	private List<AuctionPost> auctionPostList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "product_brand", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "productBrand", cascade = CascadeType.ALL)
 	private List<ProductBrandLike> productBrandLikeList = new ArrayList<>();
 }
