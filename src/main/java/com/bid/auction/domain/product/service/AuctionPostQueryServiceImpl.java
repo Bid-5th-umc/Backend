@@ -68,8 +68,11 @@ public class AuctionPostQueryServiceImpl implements AuctionPostQueryService{
 	}
 
 	@Override
+	@Transactional
 	public AuctionPostResponseDTO.MainAuctionPostDTO getAuctionPost(Long auctionPostId) {
 		AuctionPost auctionPost = auctionPostRepository.findById(auctionPostId).orElseThrow(() -> new GeneralException(ErrorStatus._AUCTION_POST_NOT_FOUND));
-		return AuctionPostConverter.toMainAuctionPostDTO(auctionPost);
+		auctionPost.incrementViewCount();
+		AuctionPost savedAuctionPost = auctionPostRepository.save(auctionPost);
+		return AuctionPostConverter.toMainAuctionPostDTO(savedAuctionPost);
 	}
 }

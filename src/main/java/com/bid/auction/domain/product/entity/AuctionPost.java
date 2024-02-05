@@ -115,4 +115,8 @@ public class AuctionPost extends BaseEntity {
 			", productCategory=" + productCategory +
 			'}';
 	}
+
+	public void incrementViewCount(){
+		this.viewCount ++;
+	}
 }
