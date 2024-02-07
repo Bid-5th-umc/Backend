@@ -7,7 +7,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-import com.bid.auction.domain.product.interceptor.HttpHandShakeInterceptor;
+import com.bid.auction.domain.bid.socket.BidHandshakeHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/ws").setAllowedOrigins("*").addInterceptors(new HttpHandShakeInterceptor()); // .withSockJS();
+		registry.addEndpoint("/ws")
+			.setAllowedOrigins("*")
+			.setHandshakeHandler(new BidHandshakeHandler()); // .withSockJS();
 	}
 
 	@Override
