@@ -49,7 +49,6 @@ public class AuctionPostCommandServiceImpl implements AuctionPostCommandService 
 				auctionPost.getAuctionPostImageList().add(auctionPostImage);
 			}
 		}
-		log.info("auctionPost = {}", auctionPost);
 		return auctionPostRepository.save(auctionPost);
 	}
 }

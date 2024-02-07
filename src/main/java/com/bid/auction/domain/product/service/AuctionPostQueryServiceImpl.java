@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bid.auction.domain.product.converter.AuctionPostConverter;
 import com.bid.auction.domain.product.entity.AuctionPost;
 import com.bid.auction.domain.product.enums.AuctionStatus;
-import com.bid.auction.domain.product.enums.ProductCategoryGender;
-import com.bid.auction.domain.product.enums.ProductCategoryName;
 import com.bid.auction.domain.product.enums.SortStatus;
 import com.bid.auction.domain.product.repository.AuctionPostRepository;
 import com.bid.auction.domain.product.web.dto.AuctionPostRequestDTO;
@@ -26,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AuctionPostQueryServiceImpl implements AuctionPostQueryService{
+public class AuctionPostQueryServiceImpl implements AuctionPostQueryService {
 
 	private final AuctionPostRepository auctionPostRepository;
 
@@ -35,10 +33,9 @@ public class AuctionPostQueryServiceImpl implements AuctionPostQueryService{
 		AuctionPostRequestDTO.getAuctionPostListDTO request) {
 		Sort sort;
 
-		if(request.getSort() == SortStatus._RECOMMAND){
+		if (request.getSort() == SortStatus._RECOMMAND) {
 			sort = Sort.by(Sort.Direction.DESC, "viewCount"); // 추천 순 -> 조회수가 많은 순서로
-		}
-		else if(request.getSort() == SortStatus._DEADLINE){
+		} else if (request.getSort() == SortStatus._DEADLINE) {
 			sort = Sort.by(Sort.Direction.ASC, "expirationDate"); // 마감 임박 순
 		}
 		// else if(sortStatus == SortStatus._POPULAR){
@@ -54,10 +51,10 @@ public class AuctionPostQueryServiceImpl implements AuctionPostQueryService{
 		Page<AuctionPost> result;
 
 		if (request.getGender() == null) {
-			 result = auctionPostRepository.findByAuctionStatus(AuctionStatus._ACTIVE,
+			result = auctionPostRepository.findByAuctionStatus(AuctionStatus._ACTIVE,
 				pageable);
-		}else {
-			if(request.getCategoryName() == null) {
+		} else {
+			if (request.getCategoryName() == null) {
 				log.error("CategoryName 값이 없습니다.");
 				throw new GeneralException(ErrorStatus._INTERNAL_SERVER_ERROR);
 			}
@@ -70,7 +67,8 @@ public class AuctionPostQueryServiceImpl implements AuctionPostQueryService{
 	@Override
 	@Transactional
 	public AuctionPostResponseDTO.MainAuctionPostDTO getAuctionPost(Long auctionPostId) {
-		AuctionPost auctionPost = auctionPostRepository.findById(auctionPostId).orElseThrow(() -> new GeneralException(ErrorStatus._AUCTION_POST_NOT_FOUND));
+		AuctionPost auctionPost = auctionPostRepository.findById(auctionPostId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._AUCTION_POST_NOT_FOUND));
 		auctionPost.incrementViewCount();
 		AuctionPost savedAuctionPost = auctionPostRepository.save(auctionPost);
 		return AuctionPostConverter.toMainAuctionPostDTO(savedAuctionPost);
