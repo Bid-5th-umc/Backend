@@ -16,12 +16,13 @@ public class BidConverter {
 			.build();
 	}
 
-	public static BidResponseDTO.AuctionBidResponseDTO toAuctionBidResponseDTO(Bid bid, Long auctionPostId){
+	public static BidResponseDTO.AuctionBidResponseDTO toAuctionBidResponseDTO(Bid bid, Long auctionPostId, String result){
 		return	BidResponseDTO.AuctionBidResponseDTO.builder()
 			.id(bid.getId())
 			.auctionPostId(auctionPostId)
 			.bidAmount(bid.getBidAmount())
 			.createdAt(LocalDateTime.now())
+			.result(result)
 			.build();
 	}
 }

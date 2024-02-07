@@ -18,5 +18,17 @@ public class BidResponseDTO {
 		private Long auctionPostId;
 		private Long bidAmount;
 		private LocalDateTime createdAt;
+		private String result;
+
+		@Override
+		public String toString() {
+			return "AuctionBidResponseDTO{" +
+				"id=" + id +
+				", auctionPostId=" + auctionPostId +
+				", bidAmount=" + bidAmount +
+				", createdAt=" + createdAt +
+				", result='" + result + '\'' +
+				'}';
+		}
 	}
 }

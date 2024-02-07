@@ -4,8 +4,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.socket.WebSocketSession;
 
 import com.bid.auction.domain.bid.converter.BidConverter;
 import com.bid.auction.domain.bid.entity.Bid;
@@ -16,9 +14,10 @@ import com.bid.auction.domain.product.enums.AuctionStatus;
 import com.bid.auction.domain.product.repository.AuctionPostRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
-@Validated
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BidWebSocketService {
@@ -31,38 +30,44 @@ public class BidWebSocketService {
 	private final int BID_INCREMENT = 5000;
 
 	@Transactional
-	public Bid placeBid(BidRequestDTO.AuctionBidRequestDTO request, WebSocketSession session){
+	public BidResponseDTO.AuctionBidResponseDTO placeBid(BidRequestDTO.AuctionBidRequestDTO request) {
+
+		log.info("placeBid 시작");
 
 		Bid bid = BidConverter.toBid(request);
 
 		String bidData = redisService.getData(String.valueOf(request.getAuctionPostId()));
-		if(bidData == null){
-			messagingTemplate.convertAndSendToUser(session.getId(), "/topic/bidRequest", "경매가 종료되었거나, 존재하지 않는 경매 상품 입니다.");
-			return null;
+
+		if (bidData == null) {
+			return BidConverter.toAuctionBidResponseDTO(bid,
+				request.getAuctionPostId(), "경매가 종료되었거나, 존재하지 않는 경매 상품 입니다.");
 		}
 
 		Long curMax = Long.parseLong(bidData);
-		if(request.getBidPrice() <= curMax + BID_INCREMENT){
-			messagingTemplate.convertAndSendToUser(session.getId(), "/topic/bidRequest", "입찰가는 현재 최고 입찰금액 + 입찰단가 이상이여야 합니다.");
-			return null;
+		if (request.getBidPrice() <= curMax + BID_INCREMENT) {
+			return BidConverter.toAuctionBidResponseDTO(bid,
+				request.getAuctionPostId(), "입찰가는 현재 최고 입찰금액 + 입찰단가 이상이여야 합니다.");
 		}
-		if(request.getBidPrice() > 1000000000) {
-			messagingTemplate.convertAndSendToUser(session.getId(), "/topic/bidRequest", "입찰가는 최대 10억원입니다.");
-			return null;
+		if (request.getBidPrice() > 1000000000) {
+			return BidConverter.toAuctionBidResponseDTO(bid,
+				request.getAuctionPostId(), "입찰가는 최대 10억원입니다.");
 		}
 
 		// rabbit MQ로 비동기 처리로 변경하기
-		AuctionPost auctionPost = auctionPostRepository.findByIdAndAuctionStatus(request.getAuctionPostId(), AuctionStatus._ACTIVE);
-		if(auctionPost == null){
-			messagingTemplate.convertAndSendToUser(session.getId(), "/topic/bidRequest", "경매가 종료되었거나, 존재하지 않는 경매 상품 입니다.");
-			return null;
+		AuctionPost auctionPost = auctionPostRepository.findByIdAndAuctionStatus(request.getAuctionPostId(),
+			AuctionStatus._ACTIVE);
+		if (auctionPost == null) {
+			log.info("경매가 종료되었거나, 존재하지 않는 경매 상품 입니다.");
+			return BidConverter.toAuctionBidResponseDTO(bid,
+				request.getAuctionPostId(), "경매가 종료되었거나, 존재하지 않는 경매 상품 입니다.");
 		}
 
-		redisService.saveData(redisService.getAuctionPostKey(request.getAuctionPostId()), request.getBidPrice().toString());
+		redisService.saveData(redisService.getAuctionPostKey(request.getAuctionPostId()),
+			request.getBidPrice().toString());
 		auctionPost.getBidList().add(bid);
 		AuctionPost save = auctionPostRepository.save(auctionPost);
 		Bid savedBid = save.getBidList().get(save.getBidList().size() - 1);
-		return savedBid;
+		return BidConverter.toAuctionBidResponseDTO(savedBid, request.getAuctionPostId(), "입찰을 성공했습니다.");
 	}
 
 }

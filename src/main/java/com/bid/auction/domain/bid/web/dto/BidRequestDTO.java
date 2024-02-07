@@ -10,7 +10,14 @@ public class BidRequestDTO {
 	@Setter
 	public static class AuctionBidRequestDTO {
 		private Long auctionPostId;
-
 		private Long bidPrice;
+
+		@Override
+		public String toString() {
+			return "AuctionBidRequestDTO{" +
+				"auctionPostId=" + auctionPostId +
+				", bidPrice=" + bidPrice +
+				'}';
+		}
 	}
 }
