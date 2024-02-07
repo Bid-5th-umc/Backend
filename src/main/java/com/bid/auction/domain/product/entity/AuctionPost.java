@@ -10,7 +10,6 @@ import com.bid.auction.domain.bid.entity.Bid;
 import com.bid.auction.domain.product.common.BaseEntity;
 import com.bid.auction.domain.product.enums.AuctionStatus;
 import com.bid.auction.domain.product.enums.ProductCondition;
-import com.bid.auction.domain.user.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -81,7 +80,7 @@ public class AuctionPost extends BaseEntity {
 	@OneToMany(mappedBy = "auctionPost", cascade = CascadeType.ALL)
 	private List<AuctionPostImage> auctionPostImageList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "auctionPost", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "auctionPost", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Bid> bidList = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -116,7 +115,7 @@ public class AuctionPost extends BaseEntity {
 			'}';
 	}
 
-	public void incrementViewCount(){
-		this.viewCount ++;
+	public void incrementViewCount() {
+		this.viewCount++;
 	}
 }
