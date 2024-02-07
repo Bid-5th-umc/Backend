@@ -6,14 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 public class BidResponseDTO {
 	@Builder
 	@Getter
 	@NoArgsConstructor
 	@AllArgsConstructor
-	public static class AuctionBidResponseDTO{
+	public static class AuctionBidResponseDTO {
 		private Long id;
 		private Long auctionPostId;
 		private Long bidAmount;
@@ -29,6 +29,16 @@ public class BidResponseDTO {
 				", createdAt=" + createdAt +
 				", result='" + result + '\'' +
 				'}';
+		}
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	public static class AuctionBidErrorResponseDTO extends AuctionBidResponseDTO {
+		private String errorResult;
+
+		public AuctionBidErrorResponseDTO(String errorResult) {
+			this.errorResult = errorResult;
 		}
 	}
 }
